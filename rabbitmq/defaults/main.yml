@@ -1,0 +1,17 @@
+---
+    rabbitmq_plugins:
+      - rabbitmq_management
+      - rabbitmq_federation_management
+    rabbitmq_users_removed:
+      - guest
+    rabbitmq_vhosts:
+        - test_vhost
+    rabbitmq_users:
+    - user: demo 
+      password: demo
+      permissions:
+        - vhost: /
+          configure_priv: .*
+          read_priv: .*
+          write_priv: .* 
+      tags: "['administrator']"

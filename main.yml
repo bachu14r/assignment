@@ -1,0 +1,28 @@
+---
+- hosts: rabbitmq
+  become: yes
+  roles:
+   - rabbitmq
+  vars:
+  rabbitmq_cluster_master: node-1
+  
+---
+- hosts: redis
+  become: yes
+  roles: 
+    - ansible-role-redis
+
+---
+- hosts: mysql
+  become: yes
+  roles: 
+    - ansible-mysql
+  vars:
+  mariadb_origin: 'upstream'
+  mariadb_users:
+    - name: 'demo'
+      password: 'demo123'
+      priv: lorem.*:ALL
+      host: 'localhost'
+  mariadb_databases:
+    name: demo

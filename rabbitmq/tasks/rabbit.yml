@@ -1,0 +1,51 @@
+---
+#it wil create the dirctory for placing the tar file
+- name: Creates directory
+  file: path=/opt/rabbit state=directory mode=0755
+
+#installing the erland version 16B03 version
+- name: installing  erlang
+  yum:
+    name: erlang
+    state: present
+
+# adding rpm key
+- rpm_key:
+    state: present
+    key: https://www.rabbitmq.com/rabbitmq-release-signing-key.asc
+
+# installing the rpm package
+- name: installing rabbitmq
+  yum:
+    name: https://bintray.com/rabbitmq/debian/download_file\?file_path\=pool%2Frabbitmq-server%2Frabbitmq-server_3.8.9-1_all.deb
+    state: present
+
+# starting the rabbitmq service
+- name: ensuring that the RabbitMQ service is running
+  service: name=rabbitmq-server state=started enabled=yes
+
+# Plugin installation
+- name: Enable the plugins is installed
+  rabbitmq_plugin:
+    names: "{{ item }}"
+    prefix: /usr/lib/rabbitmq
+    state: enabled
+    new_only: yes
+  with_items: "{{ rabbitmq_plugins }}"
+  notify: restart rabbitmq-server
+
+# Removing the guest user
+- name: Ensure the users is removed
+  rabbitmq_user:
+    user: "{{ item }}"
+    state: absent
+  with_items: "{{ rabbitmq_users_removed }}"
+
+# creating virtual host
+- name: Ensure the vhosts is present
+  rabbitmq_vhost:
+    name: "{{ item }}"
+    state: present
+  with_items: "{{ rabbitmq_vhosts }}"
+
+

@@ -1,0 +1,9 @@
+- hosts: rabbitmq
+  become: true
+  gather_facts: true
+  tasks:
+  - name : Disabaled Selinux
+    selinux: 
+      state: disabled
+  roles: 
+    - rabbitmq

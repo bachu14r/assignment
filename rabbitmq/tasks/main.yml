@@ -1,0 +1,5 @@
+- include_tasks: rabbit.yml
+- include_tasks: user.yml
+- include_tasks: plugin.yml
+- include_tasks: vhost.yml
+- include_tasks: cluster.yml

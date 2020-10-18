@@ -1,0 +1,14 @@
+# Removing the guest user
+- name: Ensure the users is removed
+  rabbitmq_user:
+    user: "{{ item }}"
+    state: absent
+  with_items: "{{ rabbitmq_users_removed }}"
+
+# creating virtual host
+- name: Ensure the vhosts is present
+  rabbitmq_vhost:
+    name: "{{ item }}"
+    state: present
+  with_items: "{{ rabbitmq_vhosts }}"
+

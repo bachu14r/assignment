@@ -1,0 +1,9 @@
+# Plugin installation
+---
+- name: Enable the plugins is installed
+  rabbitmq_plugin:
+    names: "{{ item }}"
+    state: enabled
+    new_only: yes
+  with_items: "{{ rabbitmq_plugins }}"
+  notify: restart rabbitmq-server
